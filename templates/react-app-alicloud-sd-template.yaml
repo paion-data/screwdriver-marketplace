@@ -38,9 +38,6 @@ config:
     image-home-dir:
       value: ["/root", "/"]
       description: "Allowed values for image_home_dir are '/root' for Alicloud, '/home/ubuntu' for AWS, or '/' in general"
-    vswitch-name:
-      value: "Your VSwitch Name"
-      description: "The VSwitch name to use when launching the instance"
     security-group-names:
       value: "Your Security Group Name"
       description: "The list of Security Group names"
@@ -76,7 +73,6 @@ config:
 
     - load-terraform-variable-file: |
         echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo vswitch_name               = \"$(meta get parameters.vswitch-name.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo security_group_names       = \"$(meta get parameters.security-group-names.value)"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
