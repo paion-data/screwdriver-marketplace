@@ -51,7 +51,7 @@ config:
       value: ["cloud_efficiency", "cloud_ssd", "cloud_essd"]
       description: "The system disk category for the instance"
     internet-max-bandwidth-out:
-      value: 1
+      value: "1"
       description: "The maximum bandwidth out for the instance"
     react-app-domain:
       value: "react.mycompany.com"
