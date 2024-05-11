@@ -29,7 +29,7 @@ config:
     build-instance-type:
       value: ["ecs.e-c1m1.large"]
       description: "The ECS instance type to use when building the ECS image"
-    react-dist-path:
+    dist-path:
       value: "dist"
       description: |
         The relative path, to the project root, to the production build of the React app. Defaults to "dist"
@@ -63,7 +63,6 @@ config:
         echo ecs_image_region    = \"$(meta get parameters.ecs-image-region.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo ecs_image_name      = \"$(meta get parameters.ecs-image-name.value)\"      >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo build_instance_type = \"$(meta get parameters.build-instance-type.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo react_dist_path     = \"$(meta get parameters.react-dist-path.value)\"     >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo ssl_cert_source     = \"ssl.crt\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo ssl_cert_key_source = \"ssl.key\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
@@ -76,6 +75,7 @@ config:
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
+    - load-dist-to-location-for-packer-to-pick-up: mv $(meta get parameters.dist-path.value) ../immutable-infrastructure-as-a-service/hashicorp/react/images/
 
     - packer-init: cd ../immutable-infrastructure-as-a-service/hashicorp/react/images/ && packer init .
     - packer-validate: packer validate .
