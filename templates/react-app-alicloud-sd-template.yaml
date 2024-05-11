@@ -39,7 +39,7 @@ config:
       value: ["/root", "/"]
       description: "Allowed values for image_home_dir are '/root' for Alicloud, '/home/ubuntu' for AWS, or '/' in general"
     security-group-names:
-      value: "Your Security Group Name"
+      value: ["My React SG names"]
       description: "The list of Security Group names"
     internet-charge-type:
       value: ["PayByBandwidth", "PayByTraffic"]
