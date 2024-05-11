@@ -20,44 +20,34 @@ maintainer: jingjinghu@paion-data.dev
 config:
   image: buildpack-deps:22.04-scm
   parameters:
-    region:
+    ecs-image-region:
       value: ["cn-shenzhen", "cn-beijing", "cn-hangzhou", "cn-shanghai"]
       description: "The AliCloud region where the instance will be published to. The published image will be private"
-    ali-image-name:
-      value: "ecs-react"
+    ecs-image-name:
+      value: "my-react-app-ecs-image"
       description: "The published alicoud image name; it can be arbitrary"
-    instance-type:
+    build-instance-type:
       value: ["ecs.e-c1m1.large"]
-      description: "The ECS instance type to use when building an image as well as launching the instance"
-    instance-name:
-      value: "react-app-instance"
-      description: "The deployed ECS name as appeared in the instance list of AliCloud console; it can be arbitrary"
-    build-source:
-      value: ["alicloud-ecs.react-app"]
-      description: "The source of the image to build"
-    image-home-dir:
-      value: ["/root", "/"]
-      description: "Allowed values for image_home_dir are '/root' for Alicloud, '/home/ubuntu' for AWS, or '/' in general"
-    security-group-names:
-      value: ["My React SG names"]
-      description: "The list of Security Group names"
-    internet-charge-type:
-      value: ["PayByBandwidth", "PayByTraffic"]
-      description: "The internet charge type for the instance"
-    system-disk-category:
-      value: ["cloud_efficiency", "cloud_ssd", "cloud_essd"]
-      description: "The system disk category for the instance"
-    internet-max-bandwidth-out:
-      value: "1"
-      description: "The maximum bandwidth out for the instance"
+      description: "The ECS instance type to use when building the ECS image"
+    react-dist-path:
+      value: "dist"
+      description: |
+        The relative path, to the project root, to the production build of the React app. Defaults to "dist"
     react-app-domain:
       value: "react.mycompany.com"
       description: |
         The SSL-enabled domain that will serve various React APP endpoints
-    dist-path:
-      value: "dist"
-      description: |
-        The relative path, to the project root, to the production build of the React app. Defaults to "dist"
+
+    instance-type:
+      value: ["ecs.e-c1m1.large"]
+      description: "The instance type of the running ECS"
+    instance-name:
+      value: "react-app-instance"
+      description: "The deployed ECS name as appeared in the instance list of AliCloud console; it can be arbitrary"
+    security-group-names:
+      value: ["My React SG names"]
+      description: "The list of Security Group names"
+
 
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
@@ -68,20 +58,21 @@ config:
 
     - load-ssl-certificate: echo "$SSL_CERTIFICATE"         > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.crt
     - load-ssl-certificate-key: echo "$SSL_CERTIFICATE_KEY" > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.key
+
     - load-packer-variable-file: |
-        echo region              = \"$(meta get parameters.region.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo ali_image_name      = \"$(meta get parameters.ali-image-name.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo instance_type       = \"$(meta get parameters.instance-type.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo ssl_cert_source     = \"ssl.crt\"                                       >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo ssl_cert_key_source = \"ssl.key\"                                       >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-        echo dist_path           = \"$(meta get parameters.dist-path.value)\"        >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo ecs_image_region    = \"$(meta get parameters.ecs-image-region.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo ecs_image_name      = \"$(meta get parameters.ecs-image-name.value)\"      >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo build_instance_type = \"$(meta get parameters.build-instance-type.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo react_dist_path     = \"$(meta get parameters.react-dist-path.value)\"     >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo ssl_cert_source     = \"ssl.crt\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
+        echo ssl_cert_key_source = \"ssl.key\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
 
     - load-terraform-variable-file: |
-        echo ecs_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo security_group_names       = $(meta get parameters.security-group-names.value)       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo ecs_image_name       = \"$(meta get parameters.ecs-image-name.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_type        = \"$(meta get parameters.instance-type.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_name        = \"$(meta get parameters.instance-name.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo security_group_names = $(meta get parameters.security-group-names.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
