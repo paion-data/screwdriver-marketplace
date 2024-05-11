@@ -54,6 +54,11 @@ config:
       value: "react.mycompany.com"
       description: |
         The SSL-enabled domain that will serve various React APP endpoints
+    dist-path:
+      value: "dist"
+      description: |
+        The relative path, to the project root, to the production build of the React app. Defaults to "dist"
+
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
     - install-packer: sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
@@ -71,19 +76,26 @@ config:
         echo ssl_cert_key_source = \"ssl.key\"                                       >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
 
+    - debug-1: echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-2: echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-3: echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-4: echo security_group_names       = $(meta get parameters.security-group-names.value)    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-5: echo internet_charge_type       = \"$(meta get parameters.internet-charge-type.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-6: echo system_disk_category       = \"$(meta get parameters.system-disk-category.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+    - debug-7: echo internet_max_bandwidth_out = $(meta get parameters.internet-max-bandwidth-out.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - load-terraform-variable-file: |
         echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo security_group_names       = $(meta get parameters.security-group-names.value)    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo security_group_names       = $(meta get parameters.security-group-names.value)       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo internet_charge_type       = \"$(meta get parameters.internet-charge-type.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo system_disk_category       = \"$(meta get parameters.system-disk-category.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo internet_max_bandwidth_out = $(meta get parameters.internet-max-bandwidth-out.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
-    - relocate-dist-for-hashicorp: mv dist ../immutable-infrastructure-as-a-service/hashicorp/react/images/dist
+    - relocate-dist-for-hashicorp: mv $(meta get parameters.dist-path.value) ../immutable-infrastructure-as-a-service/hashicorp/react/images/dist
 
     - packer-init: cd ../immutable-infrastructure-as-a-service/hashicorp/react/images/ && packer init .
     - packer-validate: packer validate .
