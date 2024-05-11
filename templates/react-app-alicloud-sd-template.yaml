@@ -58,13 +58,13 @@ config:
       description: |
         The SSL-enabled domain that will serve various React APP endpoints
   steps:
-    - install-node:      sd-cmd exec paion-data/install-node@latest
-    - install-packer:    sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
+    - install-node: sd-cmd exec paion-data/install-node@latest
+    - install-packer: sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
     - install-terraform: sd-cmd exec paion-data/install-hashicorp-terraform-ubuntu@latest
 
     - checkout-hashicorp-deployment-tool: git clone --depth 1 https://github.com/paion-data/immutable-infrastructure-as-a-service.git ../immutable-infrastructure-as-a-service
 
-    - load-ssl-certificate:     echo "$SSL_CERTIFICATE"     > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.crt
+    - load-ssl-certificate: echo "$SSL_CERTIFICATE"     > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.crt
     - load-ssl-certificate-key: echo "$SSL_CERTIFICATE_KEY" > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.key
     - load-packer-variable-file: |
         echo region              = \"$(meta get parameters.region.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
