@@ -15,7 +15,7 @@
 namespace: paion-data
 name: react-app-release-definition-template
 version: '1.0.0'
-description: 用于部署公司 React 应用的Screwdriver CD 模版（https://screwdriver-docs.paion-data.dev/user-guide/templates/job-templates）
+description: Screwdriver CD template for deploying React APP to Alicloud through HashiCorp
 maintainer: jingjinghu@paion-data.dev
 config:
   image: buildpack-deps:22.04-scm
@@ -51,7 +51,7 @@ config:
       value: ["cloud_efficiency", "cloud_ssd", "cloud_essd"]
       description: "The system disk category for the instance"
     internet-max-bandwidth-out:
-      value: "1"
+      value: 1
       description: "The maximum bandwidth out for the instance"
     react-app-domain:
       value: "react.mycompany.com"
@@ -75,14 +75,14 @@ config:
         echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
 
     - load-terraform-variable-file: |
-        echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"             >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo vswitch_name               = \"$(meta get parameters.vswitch-name.value)\"               >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_type              = \"$(meta get parameters.instance-type.value)\"              >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_name              = \"$(meta get parameters.instance-name.value)\"              >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo security_group_names       = \"$(meta get parameters.security-group-names.value)"        >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo internet_charge_type       = \"$(meta get parameters.internet-charge-type.value)\"       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo system_disk_category       = \"$(meta get parameters.system-disk-category.value)\"       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo internet_max_bandwidth_out = \"$(meta get parameters.internet-max-bandwidth-out.value)\" >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo vswitch_name               = \"$(meta get parameters.vswitch-name.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo security_group_names       = \"$(meta get parameters.security-group-names.value)"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo internet_charge_type       = \"$(meta get parameters.internet-charge-type.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo system_disk_category       = \"$(meta get parameters.system-disk-category.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo internet_max_bandwidth_out = $(meta get parameters.internet-max-bandwidth-out.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
