@@ -48,7 +48,6 @@ config:
       value: ["My React SG names"]
       description: "The list of Security Group names"
 
-
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
     - install-packer: sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
@@ -84,6 +83,7 @@ config:
     - terraform-init: cd ../instances && terraform init
     - terraform-validate: terraform validate
     - terraform-apply: terraform apply -auto-approve
+
   secrets:
     - SSL_CERTIFICATE
     - SSL_CERTIFICATE_KEY
