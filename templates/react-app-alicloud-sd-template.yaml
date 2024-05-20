@@ -82,6 +82,7 @@ config:
 
     - terraform-init: cd ../instances && terraform init
     - terraform-validate: terraform validate
+    - terraform-plan: terraform plan
     - terraform-apply: terraform apply -auto-approve
 
   secrets:
