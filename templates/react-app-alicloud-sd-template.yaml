@@ -47,6 +47,9 @@ config:
     security-group-names:
       value: ["My React SG names"]
       description: "The list of Security Group names"
+    vswitch-id:
+      value: "vsw-wz9qs7bztf98sstrb1ymm"
+      description: "Your VSwitch ID"
 
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
@@ -67,10 +70,12 @@ config:
         echo ssl_cert_key_source = \"ssl.key\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
 
     - load-terraform-variable-file: |
-        echo ecs_image_name       = \"$(meta get parameters.ecs-image-name.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_type        = \"$(meta get parameters.instance-type.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo instance_name        = \"$(meta get parameters.instance-name.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-        echo security_group_names = $(meta get parameters.security-group-names.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo ecs_image_name       = \"$(meta get parameters.ecs-image-name.value)\"       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_type        = \"$(meta get parameters.instance-type.value)\"        >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo instance_name        = \"$(meta get parameters.instance-name.value)\"        >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo ecs_instance_region  = \"$(meta get parameters.ecs-image-region.value)\"     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo vswitch_id           = \"$(meta get parameters.vswitch-id.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo security_group_names = $(meta get parameters.security-group-names.value)     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
