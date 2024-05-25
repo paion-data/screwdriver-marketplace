@@ -3,7 +3,7 @@ name: install-jdk-ubuntu
 version: '1.0.0'
 description: Install JDK 17
 usage: |
-  sd-cmd exec paion-data/install-jdk-ubuntu@latest
+  sd-cmd exec paion-data/install-jdk-with-maven-ubuntu@latest
 maintainer: jingjinghu@paion-data.dev
 format: binary
 binary:
