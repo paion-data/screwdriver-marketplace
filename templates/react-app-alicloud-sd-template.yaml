@@ -86,7 +86,7 @@ config:
 
     - packer-init: cd ../immutable-infrastructure-as-a-service/hashicorp/react/images/ && packer init .
     - packer-validate: packer validate .
-    - packer-build: packer build .
+    - packer-build: packer build -force .
 
     - terraform-init: cd ../instances && terraform init
     - terraform-validate: terraform validate
