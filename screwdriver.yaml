@@ -23,7 +23,7 @@ jobs:
     environment:
       SD_TEMPLATE_PATH: templates/react-app-alicloud-sd-template.yaml
   react-app-template-publish:
-    requires: [~commit, react-app-template-validate]
+    requires: [commit, react-app-template-validate]
     steps:
       - install: npm install -g screwdriver-template-main
       - publish: template-publish --tag latest
@@ -38,7 +38,7 @@ jobs:
     environment:
       SD_TEMPLATE_PATH: templates/kong-api-gateway-sd-template.yaml
   kong-api-gateway-template-publish:
-    requires: [~commit, kong-api-gateway-template-validate]
+    requires: [commit, kong-api-gateway-template-validate]
     steps:
       - install: npm install -g screwdriver-template-main
       - publish: template-publish --tag latest
@@ -50,7 +50,7 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-hashicorp-packer-ubuntu/sd-command.yaml
   publish-install-hashicorp-packer-ubuntu:
-    requires: [~commit, validate-install-hashicorp-packer-ubuntu]
+    requires: [commit, validate-install-hashicorp-packer-ubuntu]
     steps:
       - publish: sd-cmd publish -f commands/install-hashicorp-packer-ubuntu/sd-command.yaml -t latest
 
@@ -59,7 +59,7 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-hashicorp-terraform-ubuntu/sd-command.yaml
   publish-install-hashicorp-terraform-ubuntu:
-    requires: [~commit, validate-install-hashicorp-terraform-ubuntu]
+    requires: [commit, validate-install-hashicorp-terraform-ubuntu]
     steps:
       - publish: sd-cmd publish -f commands/install-hashicorp-terraform-ubuntu/sd-command.yaml -t latest
 
@@ -68,7 +68,7 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-jdk-with-maven-ubuntu/sd-command.yaml
   publish-install-jdk-with-maven-ubuntu:
-    requires: [~commit, validate-install-jdk-with-maven-ubuntu]
+    requires: [commit, validate-install-jdk-with-maven-ubuntu]
     steps:
       - publish: sd-cmd publish -f commands/install-jdk-with-maven-ubuntu/sd-command.yaml -t latest
 
@@ -77,7 +77,7 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-maven-ubuntu/sd-command.yaml
   publish-install-maven-ubuntu:
-    requires: [~commit, validate-install-maven-ubuntu]
+    requires: [commit, validate-install-maven-ubuntu]
     steps:
       - publish: sd-cmd publish -f commands/install-maven-ubuntu/sd-command.yaml -t latest
 
@@ -86,7 +86,7 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-node/sd-command.yaml
   publish-install-node:
-    requires: [~commit, validate-install-node]
+    requires: [commit, validate-install-node]
     steps:
       - publish: sd-cmd publish -f commands/install-node/sd-command.yaml -t latest
 
@@ -95,6 +95,6 @@ jobs:
     steps:
       - validate: sd-cmd validate -f commands/install-python/sd-command.yaml
   publish-install-python:
-    requires: [~commit, validate-install-python]
+    requires: [commit, validate-install-python]
     steps:
       - publish: sd-cmd publish -f commands/install-python/sd-command.yaml -t latest
