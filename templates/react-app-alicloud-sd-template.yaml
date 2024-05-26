@@ -58,8 +58,11 @@ config:
 
     - checkout-hashicorp-deployment-tool: git clone -b fix/react-tfc --depth 1 https://github.com/paion-data/immutable-infrastructure-as-a-service.git ../immutable-infrastructure-as-a-service
 
-    - load-ssl-certificate: echo "$SSL_CERTIFICATE"         > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.crt
-    - load-ssl-certificate-key: echo "$SSL_CERTIFICATE_KEY" > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.key
+    - load-ssl-certificate: echo "$SSL_CERTIFICATE_BASE64_ENCODED"         > ../immutable-infrastructure-as-a-service/hashicorp/react/images/cert.base64
+    - load-ssl-certificate-key: echo "$SSL_CERTIFICATE_KEY_BASE64_ENCODED" > ../immutable-infrastructure-as-a-service/hashicorp/react/images/key.base64
+
+    - decode-ssl-certificate: base64 -d ../immutable-infrastructure-as-a-service/hashicorp/react/images/cert.base64 > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.crt
+    - decode-ssl-certificate-key: base64 -d ../immutable-infrastructure-as-a-service/hashicorp/react/images/key.base64 > ../immutable-infrastructure-as-a-service/hashicorp/react/images/ssl.key
 
     - load-packer-variable-file: |
         echo ecs_image_region    = \"$(meta get parameters.ecs-image-region.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
@@ -68,14 +71,6 @@ config:
         echo react_app_domain    = \"$(meta get parameters.react-app-domain.value)\"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo ssl_cert_source     = \"ssl.crt\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
         echo ssl_cert_key_source = \"ssl.key\"                                          >> ../immutable-infrastructure-as-a-service/hashicorp/react/images/ali.auto.pkrvars.hcl
-
-    - debug-1: echo ali_image_name             = \"$(meta get parameters.ali-image-name.value)\"         >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-2: echo instance_type              = \"$(meta get parameters.instance-type.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-3: echo instance_name              = \"$(meta get parameters.instance-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-4: echo security_group_names       = \"$(meta get parameters.security-group-names.value)"    >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-5: echo internet_charge_type       = \"$(meta get parameters.internet-charge-type.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-6: echo system_disk_category       = \"$(meta get parameters.system-disk-category.value)\"   >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
-    - debug-7: echo internet_max_bandwidth_out = $(meta get parameters.internet-max-bandwidth-out.value) >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - load-terraform-variable-file: |
         echo ecs_image_name       = \"$(meta get parameters.ecs-image-name.value)\"       >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
@@ -99,7 +94,7 @@ config:
     - terraform-apply: terraform apply -auto-approve
 
   secrets:
-    - SSL_CERTIFICATE
-    - SSL_CERTIFICATE_KEY
+    - SSL_CERTIFICATE_BASE64_ENCODED
+    - SSL_CERTIFICATE_KEY_BASE64_ENCODED
     - ALICLOUD_ACCESS_KEY
     - ALICLOUD_SECRET_KEY
