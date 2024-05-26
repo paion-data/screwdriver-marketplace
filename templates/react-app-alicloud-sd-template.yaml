@@ -56,7 +56,7 @@ config:
     - install-packer: sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
     - install-terraform: sd-cmd exec paion-data/install-hashicorp-terraform-ubuntu@latest
 
-    - checkout-hashicorp-deployment-tool: git clone -b fix/react-tfc --depth 1 https://github.com/paion-data/immutable-infrastructure-as-a-service.git ../immutable-infrastructure-as-a-service
+    - checkout-hashicorp-deployment-tool: git clone --depth 1 https://github.com/paion-data/immutable-infrastructure-as-a-service.git ../immutable-infrastructure-as-a-service
 
     - load-ssl-certificate: echo "$SSL_CERTIFICATE_BASE64_ENCODED"         > ../immutable-infrastructure-as-a-service/hashicorp/react/images/cert.base64
     - load-ssl-certificate-key: echo "$SSL_CERTIFICATE_KEY_BASE64_ENCODED" > ../immutable-infrastructure-as-a-service/hashicorp/react/images/key.base64
@@ -86,7 +86,7 @@ config:
 
     - packer-init: cd ../immutable-infrastructure-as-a-service/hashicorp/react/images/ && packer init .
     - packer-validate: packer validate .
-    - packer-build: packer build .
+    - packer-build: packer build -force .
 
     - terraform-init: cd ../instances && terraform init
     - terraform-validate: terraform validate
