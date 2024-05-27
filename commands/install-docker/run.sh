@@ -16,6 +16,7 @@ set -e
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+apt install git -y
 git clone https://github.com/docker/docker-install.git
 cd docker-install
 sh install.sh
