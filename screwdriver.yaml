@@ -74,15 +74,6 @@ jobs:
     steps:
       - publish: sd-cmd publish -f commands/install-jdk-with-maven-ubuntu/sd-command.yaml -t latest
 
-  validate-install-maven-ubuntu:
-    requires: [~pr, ~commit]
-    steps:
-      - validate: sd-cmd validate -f commands/install-maven-ubuntu/sd-command.yaml
-  publish-install-maven-ubuntu:
-    requires: [validate-install-maven-ubuntu]
-    steps:
-      - publish: sd-cmd publish -f commands/install-maven-ubuntu/sd-command.yaml -t latest
-
   validate-install-node:
     requires: [~pr, ~commit]
     steps:
