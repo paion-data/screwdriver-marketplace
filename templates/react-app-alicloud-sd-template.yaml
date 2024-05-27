@@ -56,6 +56,9 @@ config:
     host-record:
       value: "react"
       description: "The host record of the React APP Domain"
+    eip-name:
+      value: "react-eip-name"
+      description: The Name of the EIP that you want to associate with React instance."
 
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
@@ -87,6 +90,7 @@ config:
         echo domain_name          = \"$(meta get parameters.domain-name.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo host_record          = \"$(meta get parameters.host-record.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo security_group_names = $(meta get parameters.security-group-names.value)     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo eip_name             = \"$(meta get parameters.eip-name.value)\"             >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
     - generate-dist: yarn && yarn build
