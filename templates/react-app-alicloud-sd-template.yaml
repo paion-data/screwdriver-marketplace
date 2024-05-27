@@ -50,6 +50,12 @@ config:
     vswitch-id:
       value: "vsw-wz9qs7bztf98sstrb1ymm"
       description: "Your VSwitch ID"
+    root-domain-name:
+      value: "mycompany.com"
+      description: "The root domain name of the React APP Domain"
+    host-record:
+      value: "react"
+      description: "The host record of the React APP Domain"
 
   steps:
     - install-node: sd-cmd exec paion-data/install-node@latest
@@ -78,6 +84,8 @@ config:
         echo instance_name        = \"$(meta get parameters.instance-name.value)\"        >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo ecs_instance_region  = \"$(meta get parameters.ecs-image-region.value)\"     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo vswitch_id           = \"$(meta get parameters.vswitch-id.value)\"           >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo root_domain_name     = \"$(meta get parameters.root-domain-name.value)\"     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
+        echo host_record          = \"$(meta get parameters.host-record.value)\"          >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
         echo security_group_names = $(meta get parameters.security-group-names.value)     >> ../immutable-infrastructure-as-a-service/hashicorp/react/instances/ali.auto.tfvars
 
     - install-yarn: npm install --global yarn
