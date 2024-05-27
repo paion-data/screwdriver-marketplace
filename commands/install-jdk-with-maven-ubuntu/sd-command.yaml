@@ -1,5 +1,5 @@
 namespace: paion-data
-name: install-jdk-ubuntu
+name: install-jdk-with-maven-ubuntu
 version: '1.0.0'
 description: Install JDK 17
 usage: |
