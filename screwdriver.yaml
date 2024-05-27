@@ -91,3 +91,12 @@ jobs:
     requires: [validate-install-python]
     steps:
       - publish: sd-cmd publish -f commands/install-python/sd-command.yaml -t latest
+
+  validate-install-docker:
+    requires: [~pr, ~commit]
+    steps:
+      - validate: sd-cmd validate -f commands/install-docker/sd-command.yaml
+  publish-install-docker:
+    requires: [validate-install-docker]
+    steps:
+      - publish: sd-cmd publish -f commands/install-docker/sd-command.yaml -t latest
