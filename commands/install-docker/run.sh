@@ -19,3 +19,4 @@ set -e
 git clone https://github.com/docker/docker-install.git
 cd docker-install
 sh install.sh
+cd ../
