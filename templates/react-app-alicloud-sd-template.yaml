@@ -65,7 +65,7 @@ config:
     - install-packer: sd-cmd exec paion-data/install-hashicorp-packer-ubuntu@latest
     - install-terraform: sd-cmd exec paion-data/install-hashicorp-terraform-ubuntu@latest
     # https://github.com/aliyun/aliyun-cli
-    - install-aliyun-cli: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/aliyun/aliyun-cli/HEAD/install.sh)"]
+    - install-aliyun-cli: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/aliyun/aliyun-cli/HEAD/install.sh)"
 
     - checkout-hashicorp-deployment-tool: git clone --depth 1 https://github.com/paion-data/immutable-infrastructure-as-a-service.git ../immutable-infrastructure-as-a-service
 
