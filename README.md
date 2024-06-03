@@ -1,4 +1,4 @@
 Screwdriver CD Marketplace
 ==========================
 
-TBA
+**This repo has been integrated into https://github.com/paion-data/ci-cd-core**
